@@ -1,3 +1,7 @@
+var $ = require('jquery');
+require('mapbox.js');
+require('leaflet.markercluster');
+
 var map = L.mapbox.map('map', 'examples.map-9ijuk24y').setView([37.8102589045, -122.265385309], 12)
   , featureLayer;
 
@@ -28,7 +32,7 @@ L.MarkerClusterGroup.include({
         icon: L.mapbox.marker.icon({'marker-symbol': a.properties['marker-symbol'], 'marker-color': a.properties['marker-color']}),
         title: title
       });
-     
+
       marker.bindPopup(buildPopup(a.properties));
       markers.push(marker);
     }
@@ -46,8 +50,7 @@ $.getJSON('http://localhost:8000/', function(data) {
   };
 
   map.addLayer(cluster);
-  cluster.fromGeoJSON(geojson); 
-
+  cluster.fromGeoJSON(geojson);
 });
 
 $('#controls').click("input", function (e) {
