@@ -4,8 +4,11 @@
   "description": "An example map-communities frontend",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build && static",
-    "build": "mkdir -p build && browserify app.js > build/app.js"
+    "start": "static",
+    "dev": "npm run watch & static",
+    "build": "mkdir -p build && browserify app.js > build/app.js",
+    "watch": "watchify app.js -o build/app.js -v",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -23,5 +26,8 @@
     "jquery": "^2.1.0",
     "mapbox.js": "^1.6.2",
     "leaflet.markercluster": "^0.4.0"
+  },
+  "devDependencies": {
+    "watchify": "^0.8.2"
   }
 }
