@@ -3,11 +3,25 @@
   -moz-box-sizing: border-box;
 }
 
+html {
+  background-color: #DDD;
+}
+
+#wrapper {
+  width: 800px;
+  margin: 0 auto;
+}
+
+header {
+  height: 100px;
+}
+
 #map {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  width: 800px;
+  height: 400px;
   background: #4b83ad;
+}
+
+#controls {
+  
 }

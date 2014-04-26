@@ -4,13 +4,21 @@
   <link href='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet'>
   <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet'>
   <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet'>
-  <link href='bootstrap/css/bootstrap.css' rel='stylesheet'>
   <link href='css/normalize.css' rel='stylesheet'>
   <link href='css/app.css' rel='stylesheet'>
 </head>
 <body>
-
-  <div id="map"></div>
+  <div id="wrapper">
+    <header>
+      <h1>Map Community</h1>
+      <h2>Awesome things!</h2>
+    </header>
+    <div id="map"></div>
+    <div id="controls">
+      <input type="checkbox" value="Exempt" checked> Exempt
+      <input type="checkbox" value="Not Exempt" checked> Not Exempt
+    </div>
+  </div>
 
   <script src='//code.jquery.com/jquery-1.10.2.min.js'></script>
   <script src='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script>
