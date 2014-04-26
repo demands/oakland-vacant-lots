@@ -3,7 +3,7 @@ var map = L.mapbox.map('map', 'examples.map-9ijuk24y').setView([37.8102589045, -
 var popup = L.popup({offset: L.point(0, -30)});
 
 $(document).ready(function() {
-  $.getJSON('/ajax/vacantlots', function(data) {
+  $.getJSON('http://localhost:8000/', function(data) {
     var geojson = {
       type: 'FeatureCollection',
       features: data
@@ -26,11 +26,10 @@ $(document).ready(function() {
 
       })
     ;
-    
+
     var markers = new L.MarkerClusterGroup();
     markers.addLayer(featureLayer);
 
     map.addLayer(markers);
-    
   });
 });
