@@ -11,17 +11,3 @@
   bottom: 0;
   background: #4b83ad;
 }
-
-#controls {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  width: 300px;
-  background: #fff;
-  padding: 10px;
-}
-
-h1, h2 {
-  padding: 0px;
-  margin: 0px;
-}
