@@ -43,6 +43,7 @@ L.MarkerClusterGroup.include({
 });
 
 var cluster = new L.MarkerClusterGroup();
+map.addLayer(cluster);
 
 $.getJSON('http://localhost:8000/', function(data) {
   var geojson = {
@@ -50,7 +51,6 @@ $.getJSON('http://localhost:8000/', function(data) {
     features: data
   };
 
-  map.addLayer(cluster);
   cluster.fromGeoJSON(geojson);
 });
 
