@@ -6,7 +6,7 @@
   "scripts": {
     "start": "static",
     "dev": "npm run watch & static",
-    "build": "mkdir -p build && browserify app.js > build/app.js",
+    "build": "mkdir -p build && browserify app.js | uglifyjs - > build/app.js",
     "build-dev": "browserify app.js --debug | exorcist build/app.js.map > build/app.js",
     "watch": "watchy -w . -i 'build|.git' -- npm run build-dev",
     "prepublish": "npm run build"
@@ -26,7 +26,8 @@
     "browserify": "^3.44.2",
     "jquery": "^2.1.0",
     "mapbox.js": "^1.6.2",
-    "leaflet.markercluster": "^0.4.0"
+    "leaflet.markercluster": "^0.4.0",
+    "uglify-js": "^2.4.13"
   },
   "devDependencies": {
     "exorcist": "^0.1.6",
