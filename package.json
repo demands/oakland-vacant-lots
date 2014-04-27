@@ -7,7 +7,8 @@
     "start": "static",
     "dev": "npm run watch & static",
     "build": "mkdir -p build && browserify app.js > build/app.js",
-    "watch": "watchify app.js -o build/app.js -v",
+    "build-dev": "browserify app.js --debug | exorcist build/app.js.map > build/app.js",
+    "watch": "watchy -w . -i 'build|.git' -- npm run build-dev",
     "prepublish": "npm run build"
   },
   "repository": {
@@ -28,6 +29,7 @@
     "leaflet.markercluster": "^0.4.0"
   },
   "devDependencies": {
-    "watchify": "^0.8.2"
+    "exorcist": "^0.1.6",
+    "watchy": "^0.4.3"
   }
 }
