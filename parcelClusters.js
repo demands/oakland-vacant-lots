@@ -1,7 +1,7 @@
 require('leaflet.markercluster');
 
 function popupHtml(properties) {
-  return '<h1>' + properties.Address + '</h1>' +
+  return '<h1><a href="./point/' + properties.TARGET_FID + '">' + properties.Address + '</a></h1>' +
     'Category: ' + properties.SpecUse + '<br/>' +
     'Acres: ' + properties.Acre + '<br/>' +
     'Square Ft: ' + properties["SqFt\r"] + '<br/>' +
