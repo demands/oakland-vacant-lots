@@ -8,13 +8,32 @@
   <div id="wrapper">
     <header>
       <h1>Map Community</h1>
-      <h2>Awesome things!</h2>
     </header>
     <div id="point"></div>
   </div>
 
   <script type="text/mustache" id="point-template">
-    Address: {{address}}
+    <h2>{{name}}</h2>
+    
+    <h3>Basics</h3>
+    <address>
+      {{address}}<br>
+      {{city}}, {{state}} {{zip}}
+    </address>
+    <p><b>APN:</b> {{apn}}</p>
+    <p><b>Square Footage:</b> {{square_footage}}</p>
+    <p><b>Acreage:</b> {{acreage}}</p>
+    <p><b>Use:</b> {{use_code}} ({{use_desc}})</p>
+    
+    <h3>Owner</h3>
+    <p>{{owner}}</p>
+    <address>
+      {{owner_address}}, {{owner_zip}}<br>
+    </address>
+    
+    <h3>Zoning</h3>
+    <p>{{zone_label}}</p>
+    
   </script>
   <script src='build/app.js'></script>
 </body>
