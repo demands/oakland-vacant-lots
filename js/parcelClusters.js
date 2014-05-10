@@ -2,11 +2,11 @@ require('leaflet.markercluster');
 var Mustache = require('mustache');
 
 function popupHtml(properties) {
-  var popupTemplate = '<h1><a href="./point.html?point={{TARGET_FID}}">{{Address}}</a></h1>' +
-    'Category: {{SpecUse}}<br/>' +
-    'Acres: {{Acre}}<br/>' +
-    'Square Ft: {{SqFt}}<br/>' +
-    'FID Parcel: {{FID_PARCEL}}';
+  var popupTemplate = '<h1><a href="./point.html?point={{target_fid}}">{{address}}</a></h1>' +
+    'Category: {{spec_use}}<br/>' +
+    'Acres: {{acreage}}<br/>' +
+    'Square Ft: {{square_footage}}<br/>' +
+    'FID Parcel: {{fid_parcel}}';
 
     return Mustache.render(popupTemplate, properties);
 }
