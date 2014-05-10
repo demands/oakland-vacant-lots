@@ -27,7 +27,8 @@
     "jquery": "^2.1.0",
     "mapbox.js": "^1.6.2",
     "leaflet.markercluster": "^0.4.0",
-    "uglify-js": "^2.4.13"
+    "uglify-js": "^2.4.13",
+    "mustache": "^0.8.1"
   },
   "devDependencies": {
     "exorcist": "^0.1.6",

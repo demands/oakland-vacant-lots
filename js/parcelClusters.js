@@ -1,11 +1,14 @@
 require('leaflet.markercluster');
+var Mustache = require('mustache');
 
 function popupHtml(properties) {
-  return '<h1><a href="./point/' + properties.TARGET_FID + '">' + properties.Address + '</a></h1>' +
-    'Category: ' + properties.SpecUse + '<br/>' +
-    'Acres: ' + properties.Acre + '<br/>' +
-    'Square Ft: ' + properties["SqFt\r"] + '<br/>' +
-    'FID Parcel: ' + properties.FID_PARCEL;
+  var popupTemplate = '<h1><a href="./point.html?point={{TARGET_FID}}">{{Address}}</a></h1>' +
+    'Category: {{SpecUse}}<br/>' +
+    'Acres: {{Acre}}<br/>' +
+    'Square Ft: {{SqFt}}<br/>' +
+    'FID Parcel: {{FID_PARCEL}}';
+
+    return Mustache.render(popupTemplate, properties);
 }
 
 function parcelMarker(geoJson) {
