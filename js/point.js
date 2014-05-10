@@ -40,7 +40,7 @@ module.exports = function(parsedUrl) {
       var template = $('#point-template').html();
 
       var output = Mustache.render(template, data.properties);
-      $('#point').html(output);
+      $('#point-info').html(output);
     });
   }
 }

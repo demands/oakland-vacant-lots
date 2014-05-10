@@ -11,17 +11,27 @@
       <h1>Map Community</h1>
     </header>
     <div id="street-view"></div>
-    <div id="point"></div>
+    <div id="point">
+      <nav id="point-nav">
+        <a href="./organize.html">Organize Around This Point</a>
+        <a href="./report-point.html">Report Point as Error</a>
+      </nav>
+      <div id="point-info"></div>
+    </div>
     <aside class="right">
       <div id="map-view"></div>
-      <a href="./report-point.html">Report point as error</a>
     </aside>
+    <div class="clear-it"></div>
+    <footer >
+      map-communities!
+    </footer>
   </div>
 
+
   <script type="text/mustache" id="point-template">
-    <h2>{{name}}</h2>
+    <h1>{{name}}</h1>
     
-    <h3>Basics</h3>
+    <h2>Point Information</h2>
     <address>
       {{address}}<br>
       {{city}}, {{state}} {{zip}}
@@ -40,6 +50,11 @@
     <h3>Zoning</h3>
     <p>{{zone_label}}</p>
     
+    <h3>Notes</h3>
+    <a href="./add_note.html">Add a note</a>
+
+    <h3>Pictures</h3>
+    <a href="./add_picture.html">Add a picture</a>
   </script>
   <script src='build/app.js'></script>
 </body>
