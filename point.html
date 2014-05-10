@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Map Community</title>
+  <link href='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet'>
   <link href='css/app.css' rel='stylesheet'>
 </head>
 <body>
@@ -11,6 +12,10 @@
     </header>
     <div id="street-view"></div>
     <div id="point"></div>
+    <aside class="right">
+      <div id="map-view"></div>
+      <a href="./report-point.html">Report point as error</a>
+    </aside>
   </div>
 
   <script type="text/mustache" id="point-template">

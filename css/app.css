@@ -5,6 +5,21 @@
 
 html {
   background-color: #DDD;
+  font: 12px verdana, sans-serif;
+  color: #000;
+}
+
+a {
+  font: 12px verdana, sans-serif;
+  color: #000;
+}
+
+.clear-it {
+  clear: both;
+  font-size: 1px;
+  line-height: 1px;
+  height: 1px;
+  display: block;
 }
 
 #wrapper {
@@ -16,18 +31,40 @@ header {
   height: 100px;
 }
 
+/* Index Page */
 #map {
   width: 800px;
   height: 400px;
   background: #4b83ad;
 }
 
+#controls {
+  
+}
+
+/* Point Detail */
 #street-view {
   width: 800px;
   height: 200px;
   background: #4b83ad;
+  margin-bottom: 20px;
 }
 
-#controls {
-  
+#map-view {
+  width: 200px;
+  height: 200px;
+  border: 1px #000 solid;
 }
+
+#point {
+  float: left;
+  display: inline;
+}
+
+aside.right {
+  float: right;
+  display: inline;
+}
+
+
+

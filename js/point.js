@@ -1,3 +1,4 @@
+require('mapbox.js');
 var Mustache = require('mustache');
 var $ = require('jquery');
 var GoogleMapsLoader = require('google-maps');
@@ -11,7 +12,7 @@ module.exports = function(parsedUrl) {
       GoogleMapsLoader.load(function(google) {
         var sv = new google.maps.StreetViewService();
         var pointPos = new google.maps.LatLng(coords[1], coords[0]);
-        
+
         sv.getPanoramaByLocation(pointPos, 50, function (data, status){
           if (status == google.maps.StreetViewStatus.OK) {
             var street_view_options = {
@@ -30,6 +31,9 @@ module.exports = function(parsedUrl) {
             street_view.setVisible(true);
           }
         });
+
+        var map = L.mapbox.map('map-view', 'examples.map-9ijuk24y').setView([coords[1], coords[0]], 14);
+        L.mapbox.featureLayer(data).addTo(map);
 
       });
 
