@@ -22,6 +22,12 @@ header {
   background: #4b83ad;
 }
 
+#street-view {
+  width: 800px;
+  height: 200px;
+  background: #4b83ad;
+}
+
 #controls {
   
 }
