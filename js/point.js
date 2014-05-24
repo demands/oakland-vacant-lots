@@ -6,7 +6,7 @@ var GoogleMapsLoader = require('google-maps');
 module.exports = function(parsedUrl) {
   var pointId = parsedUrl.query.point;
   if (pointId) {
-    $.getJSON('http://localhost:8000/point/' + pointId, function(data) {
+    $.getJSON('http://localhost:8000/points/' + pointId, function(data) {
 
       var coords = data.geometry.coordinates;
       GoogleMapsLoader.load(function(google) {
@@ -32,7 +32,7 @@ module.exports = function(parsedUrl) {
           }
         });
 
-        var map = L.mapbox.map('map-view', 'examples.map-9ijuk24y').setView([coords[1], coords[0]], 14);
+        var map = L.mapbox.map('map-view', 'examples.map-i86nkdio').setView([coords[1], coords[0]], 14);
         L.mapbox.featureLayer(data).addTo(map);
 
       });

@@ -1,8 +1,8 @@
 {
-  "name": "map-communities-frontend",
+  "name": "map-communities-example-frontend",
   "version": "0.0.0",
   "description": "An example map-communities frontend",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "static",
     "dev": "npm run watch & static",
