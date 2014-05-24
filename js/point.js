@@ -32,7 +32,7 @@ module.exports = function(parsedUrl) {
           }
         });
 
-        var map = L.mapbox.map('map-view', 'examples.map-i86nkdio').setView([coords[1], coords[0]], 14);
+        var map = L.mapbox.map('map-view', MAPBOX_MAP_ID).setView([coords[1], coords[0]], 14);
         L.mapbox.featureLayer(data).addTo(map);
 
       });

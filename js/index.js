@@ -3,7 +3,7 @@ require('./parcelClusters');
 var $ = require('jquery');
 
 module.exports = function(){
-  var map = L.mapbox.map('map', 'examples.map-i86nkdio').setView([37.8102589045, -122.265385309], 12);
+  var map = L.mapbox.map('map', MAPBOX_MAP_ID).setView([37.8102589045, -122.265385309], 12);
   var cluster = new L.MarkerClusterGroup();
   map.addLayer(cluster);
 
