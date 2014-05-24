@@ -7,7 +7,7 @@ module.exports = function(){
   var cluster = new L.MarkerClusterGroup();
   map.addLayer(cluster);
 
-  $.getJSON('http://localhost:8000/points', function(data) {
+  $.getJSON(SERVER_BASE_URL + '/points', function(data) {
     cluster.addBulk(data.features);
   });
 

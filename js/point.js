@@ -6,7 +6,7 @@ var GoogleMapsLoader = require('google-maps');
 module.exports = function(parsedUrl) {
   var pointId = parsedUrl.query.point;
   if (pointId) {
-    $.getJSON('http://localhost:8000/points/' + pointId, function(data) {
+    $.getJSON(SERVER_BASE_URL + '/points/' + pointId, function(data) {
 
       var coords = data.geometry.coordinates;
       GoogleMapsLoader.load(function(google) {
