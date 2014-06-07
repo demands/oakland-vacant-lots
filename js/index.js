@@ -1,24 +1,32 @@
-require('mapbox.js');
-require('./parcelClusters');
+var filterableClusterMap = require('./filterableClusterMap');
 var $ = require('jquery');
+var Mustache = require('mustache');
 
-module.exports = function(map){
+function popupHtml(properties) {
+  var popupTemplate = '<h1><a href="./point.html?point={{target_fid}}">{{address}}</a></h1>' +
+    'Category: {{spec_use}}<br/>' +
+    'Acres: {{acreage}}<br/>' +
+    'Square Ft: {{square_footage}}<br/>' +
+    'FID Parcel: {{fid_parcel}}';
 
-  var cluster = new L.MarkerClusterGroup();
-  map.addLayer(cluster);
+    return Mustache.render(popupTemplate, properties);
+}
+
+module.exports = function(map) {
+  if (!map) {
+    map = new filterableClusterMap($('#map')[0], {popup: popupHtml, mapboxId: MAPBOX_MAP_ID});
+  }
 
   $.getJSON(SERVER_BASE_URL + '/points', function(data) {
     console.log("adding markers", data);
-    cluster.addBulk(data.features);
+    map.addBulk(data.features);
   });
 
   $('#controls').click("input", function (e) {
     console.log("handling click");
-    var child_categories = $(e.currentTarget).children(":checked").map(function (idx, c){
+    var childCategories = $(e.currentTarget).children(":checked").map(function (idx, c){
       return $(c).val();
     }).toArray();
-    cluster.filterCategory(child_categories);
+    map.filterCategory(childCategories);
   });
-
-  return cluster;
-}
+};

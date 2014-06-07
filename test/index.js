@@ -11,10 +11,7 @@ var test = require('tape');
 var index = require('../js/index.js');
 var $ = require('jquery');
 
-global.MAPBOX_MAP_ID = 'map-communities.ib23mbhk';
 global.SERVER_BASE_URL = 'http://localhost:8000';
-
-var map = L.mapbox.map('map', MAPBOX_MAP_ID).setView([37.8102589045, -122.265385309], 12);
 
 function logRequests() {
   var xhr = sinon.useFakeXMLHttpRequest();
@@ -31,6 +28,11 @@ test('index: requests all points', function(t) {
 
   t.plan(1);
 
+  var map = {
+    addBulk: sinon.stub(),
+    filterCategory: sinon.stub()
+  };
+
   var requests = logRequests()
   index(map);
   var request = requests[0];
@@ -39,16 +41,3 @@ test('index: requests all points', function(t) {
   t.equal(request.url, SERVER_BASE_URL + "/points");
 
 });
-
-// test('index: filters filter', function(t) {
-
-//   t.plan(1);
-
-//   var requests = logRequests()
-//   index(map);
-//   var request = requests[0];
-
-//   request.respond(200, { "Content-Type": "application/json" }, JSON.stringify(features));
-//   window.setTimeout(function() {$("#controls [value=Exempt]").click();}, 0);
-
-// });

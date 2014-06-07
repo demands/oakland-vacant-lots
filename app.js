@@ -7,8 +7,7 @@ global.SERVER_BASE_URL = 'http://localhost:8000';
 
 // TODO: get fancy w/ requiring the pathname
 if (parsedUrl.pathname == '/') {
-  var map = L.mapbox.map('map', MAPBOX_MAP_ID).setView([37.8102589045, -122.265385309], 12);
-  require('./js/index')(map);
+  require('./js/index')();
 } else if (parsedUrl.pathname == '/point.html') {
   require('./js/point')(parsedUrl);
 }

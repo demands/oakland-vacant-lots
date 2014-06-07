@@ -1,31 +1,64 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 require('mapbox.js');
-require('./parcelClusters');
-var $ = require('jquery');
-
-module.exports = function(map){
-
-  var cluster = new L.MarkerClusterGroup();
-  map.addLayer(cluster);
-
-  $.getJSON(SERVER_BASE_URL + '/points', function(data) {
-    console.log("adding markers", data);
-    cluster.addBulk(data.features);
-  });
-
-  $('#controls').click("input", function (e) {
-    console.log("handling click");
-    var child_categories = $(e.currentTarget).children(":checked").map(function (idx, c){
-      return $(c).val();
-    }).toArray();
-    cluster.filterCategory(child_categories);
-  });
-
-  return cluster;
-}
-
-},{"./parcelClusters":2,"jquery":19,"mapbox.js":21}],2:[function(require,module,exports){
 require('leaflet.markercluster');
+
+// options:
+//   mapboxId: <String> mapbox map id
+//   popup: <Function> single argument with parcel, should return html for a parcel popup
+function filterableClusterMap(domRef, options) {
+  this.options = options;
+
+  this.map = L.mapbox.map(domRef, this.options.mapboxId);
+
+  // TODO how to set default view?
+  this.map.setView([37.8102589045, -122.265385309], 12);
+
+  this.clusterLayer = new L.MarkerClusterGroup();
+  this.map.addLayer(this.clusterLayer);
+};
+
+module.exports = filterableClusterMap;
+
+filterableClusterMap.prototype.addBulk = function addBulk(parcels) {
+  popupHtml = this.options.popup;
+  this._markers = parcels.map(function(parcel) {
+
+    var latLng = new L.LatLng(
+      parcel.geometry.coordinates[1],
+      parcel.geometry.coordinates[0]
+    );
+
+    var marker = L.marker(latLng, {
+      icon: L.mapbox.marker.icon(),
+      title: parcel.properties.Address
+    });
+
+    marker.bindPopup(popupHtml(parcel.properties));
+    marker.category = parcel.properties.SpecUse;
+    return marker;
+  });
+  this.clusterLayer.addLayers(this._markers);
+};
+
+filterableClusterMap.prototype.filterCategory = function filterCategory(categories) {
+  var clusterLayer = this.clusterLayer;
+  this._markers.forEach(function(marker) {
+    var showing = clusterLayer.hasLayer(marker);
+    var shouldBeShowing = categories.indexOf(marker.category) >= 0;
+
+    if(showing && !shouldBeShowing) {
+      clusterLayer.removeLayer(marker);
+    }
+    if(!showing && shouldBeShowing) {
+      clusterLayer.addLayer(marker);
+    }
+  });
+};
+
+
+},{"leaflet.markercluster":20,"mapbox.js":21}],2:[function(require,module,exports){
+var filterableClusterMap = require('./filterableClusterMap');
+var $ = require('jquery');
 var Mustache = require('mustache');
 
 function popupHtml(properties) {
@@ -38,43 +71,26 @@ function popupHtml(properties) {
     return Mustache.render(popupTemplate, properties);
 }
 
-function parcelMarker(geoJson) {
-  var latLng = new L.LatLng(
-    geoJson.geometry.coordinates[1],
-    geoJson.geometry.coordinates[0]
-  );
-  var marker = L.marker(latLng, {
-    icon: L.mapbox.marker.icon(),
-    title: geoJson.properties.Address
-  });
-  marker.bindPopup(popupHtml(geoJson.properties));
-  marker.category = geoJson.properties.SpecUse;
-  return marker;
-}
-
-L.MarkerClusterGroup.include({
-  addBulk: function(parcels) {
-    this._markers = parcels.map(function(parcel) {
-      return parcelMarker(parcel);
-    });
-    this.addLayers(this._markers);
-  },
-  filterCategory: function(categories) {
-    this._markers.forEach(function(marker) {
-      var showing = this.hasLayer(marker);
-      var shouldBeShowing = categories.indexOf(marker.category) >= 0;
-
-      if(showing && !shouldBeShowing) {
-        this.removeLayer(marker);
-      }
-      if(!showing && shouldBeShowing) {
-        this.addLayer(marker);
-      }
-    }.bind(this));
+module.exports = function(map) {
+  if (!map) {
+    map = new filterableClusterMap($('#map')[0], {popup: popupHtml, mapboxId: MAPBOX_MAP_ID});
   }
-});
 
-},{"leaflet.markercluster":20,"mustache":49}],3:[function(require,module,exports){
+  $.getJSON(SERVER_BASE_URL + '/points', function(data) {
+    console.log("adding markers", data);
+    map.addBulk(data.features);
+  });
+
+  $('#controls').click("input", function (e) {
+    console.log("handling click");
+    var childCategories = $(e.currentTarget).children(":checked").map(function (idx, c){
+      return $(c).val();
+    }).toArray();
+    map.filterCategory(childCategories);
+  });
+};
+
+},{"./filterableClusterMap":1,"jquery":19,"mustache":49}],3:[function(require,module,exports){
 
 },{}],4:[function(require,module,exports){
 /*!
@@ -2012,8 +2028,8 @@ var substr = 'ab'.substr(-1) === 'b'
     }
 ;
 
-}).call(this,require("/Users/demands/Projects/frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/Users/demands/Projects/frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":9}],11:[function(require,module,exports){
+}).call(this,require("/Users/demands/Projects/example-frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
+},{"/Users/demands/Projects/example-frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":9}],11:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -3250,8 +3266,8 @@ function indexOf (xs, x) {
   return -1;
 }
 
-}).call(this,require("/Users/demands/Projects/frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"./index.js":12,"/Users/demands/Projects/frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":9,"buffer":4,"events":7,"inherits":8,"process/browser.js":13,"string_decoder":18}],16:[function(require,module,exports){
+}).call(this,require("/Users/demands/Projects/example-frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
+},{"./index.js":12,"/Users/demands/Projects/example-frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":9,"buffer":4,"events":7,"inherits":8,"process/browser.js":13,"string_decoder":18}],16:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -28774,8 +28790,8 @@ function createHarness (conf_) {
     return test;
 }
 
-}).call(this,require("/Users/demands/Projects/frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"./lib/default_stream":51,"./lib/results":52,"./lib/test":53,"/Users/demands/Projects/frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":9,"defined":57,"through":61}],51:[function(require,module,exports){
+}).call(this,require("/Users/demands/Projects/example-frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
+},{"./lib/default_stream":51,"./lib/results":52,"./lib/test":53,"/Users/demands/Projects/example-frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":9,"defined":57,"through":61}],51:[function(require,module,exports){
 (function (process){
 var through = require('through');
 var fs = require('fs');
@@ -28809,8 +28825,8 @@ module.exports = function () {
     }
 };
 
-}).call(this,require("/Users/demands/Projects/frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/Users/demands/Projects/frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":9,"fs":3,"through":61}],52:[function(require,module,exports){
+}).call(this,require("/Users/demands/Projects/example-frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
+},{"/Users/demands/Projects/example-frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":9,"fs":3,"through":61}],52:[function(require,module,exports){
 (function (process){
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('inherits');
@@ -29002,8 +29018,8 @@ function has (obj, prop) {
     return Object.prototype.hasOwnProperty.call(obj, prop);
 }
 
-}).call(this,require("/Users/demands/Projects/frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/Users/demands/Projects/frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":9,"events":7,"inherits":58,"object-inspect":59,"resumer":60,"through":61}],53:[function(require,module,exports){
+}).call(this,require("/Users/demands/Projects/example-frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
+},{"/Users/demands/Projects/example-frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":9,"events":7,"inherits":58,"object-inspect":59,"resumer":60,"through":61}],53:[function(require,module,exports){
 (function (process,__dirname){
 var Stream = require('stream');
 var deepEqual = require('deep-equal');
@@ -29475,8 +29491,8 @@ Test.skip = function (name_, _opts, _cb) {
 
 // vim: set softtabstop=4 shiftwidth=4:
 
-}).call(this,require("/Users/demands/Projects/frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),"/../node_modules/tape/lib")
-},{"/Users/demands/Projects/frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":9,"deep-equal":54,"defined":57,"events":7,"inherits":58,"path":10,"stream":12}],54:[function(require,module,exports){
+}).call(this,require("/Users/demands/Projects/example-frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),"/../node_modules/tape/lib")
+},{"/Users/demands/Projects/example-frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":9,"deep-equal":54,"defined":57,"events":7,"inherits":58,"path":10,"stream":12}],54:[function(require,module,exports){
 var pSlice = Array.prototype.slice;
 var objectKeys = require('./lib/keys.js');
 var isArguments = require('./lib/is_arguments.js');
@@ -29775,8 +29791,8 @@ module.exports = function (write, end) {
     return tr;
 };
 
-}).call(this,require("/Users/demands/Projects/frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/Users/demands/Projects/frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":9,"through":61}],61:[function(require,module,exports){
+}).call(this,require("/Users/demands/Projects/example-frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
+},{"/Users/demands/Projects/example-frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":9,"through":61}],61:[function(require,module,exports){
 (function (process){
 var Stream = require('stream')
 
@@ -29887,8 +29903,8 @@ function through (write, end, opts) {
 }
 
 
-}).call(this,require("/Users/demands/Projects/frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/Users/demands/Projects/frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":9,"stream":12}],62:[function(require,module,exports){
+}).call(this,require("/Users/demands/Projects/example-frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
+},{"/Users/demands/Projects/example-frontend/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":9,"stream":12}],62:[function(require,module,exports){
 (function (global){
 var features = {"type":"FeatureCollection","features":[
 {"type":"Feature","geometry":{"type":"Point","coordinates":["-122.26538530900","37.81025890450"]},"properties":{"target_fid":"4","object_id":"1018","apn":"8-653-14-1","created_at":"2004-06-07T07:00:00.000Z","updated_at":"2004-06-07T07:00:00.000Z","fid_parcel":"2977","address":"2150 Webster St","city":"Oakland","state":"CA","zip":"94612","owner":"Pacific Bell 279-1-43-2","owner_address":"San Ramon, CA","owner_zip":"94583","use_code":"500","use_desc":"Property owned by a public utility","spec_use":"Exempt","gen_use":"Exempt","base_zone":"CBD-C","overlay":"","zone_label":"CBD-C","acreage":"0.58595","square_footage":"25523.82704"}},
@@ -29903,10 +29919,7 @@ var test = require('tape');
 var index = require('../js/index.js');
 var $ = require('jquery');
 
-global.MAPBOX_MAP_ID = 'map-communities.ib23mbhk';
 global.SERVER_BASE_URL = 'http://localhost:8000';
-
-var map = L.mapbox.map('map', MAPBOX_MAP_ID).setView([37.8102589045, -122.265385309], 12);
 
 function logRequests() {
   var xhr = sinon.useFakeXMLHttpRequest();
@@ -29923,6 +29936,11 @@ test('index: requests all points', function(t) {
 
   t.plan(1);
 
+  var map = {
+    addBulk: sinon.stub(),
+    filterCategory: sinon.stub()
+  };
+
   var requests = logRequests()
   index(map);
   var request = requests[0];
@@ -29932,18 +29950,5 @@ test('index: requests all points', function(t) {
 
 });
 
-// test('index: filters filter', function(t) {
-
-//   t.plan(1);
-
-//   var requests = logRequests()
-//   index(map);
-//   var request = requests[0];
-
-//   request.respond(200, { "Content-Type": "application/json" }, JSON.stringify(features));
-//   window.setTimeout(function() {$("#controls [value=Exempt]").click();}, 0);
-
-// });
-
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../js/index.js":1,"jquery":19,"tape":50}]},{},[62])
+},{"../js/index.js":2,"jquery":19,"tape":50}]},{},[62])
