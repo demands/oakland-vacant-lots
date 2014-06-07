@@ -16,7 +16,10 @@
     "type": "git",
     "url": "https://github.com/map-communities/frontend.git"
   },
-  "author": "",
+  "contributors": [
+    "H0ke (http://h0ke.com/)",
+    "demands (http://maxedmands.com)"
+  ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/map-communities/frontend/issues"
