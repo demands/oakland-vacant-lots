@@ -33,17 +33,17 @@ filterableClusterMap.prototype.addBulk = function addBulk(parcels) {
     });
 
     marker.bindPopup(popupHtml(parcel.properties));
-    marker.category = parcel.properties.SpecUse;
+    marker.properties = parcel.properties;
     return marker;
   });
   this.clusterLayer.addLayers(this._markers);
 };
 
-filterableClusterMap.prototype.filterCategory = function filterCategory(categories) {
+filterableClusterMap.prototype.filterCategory = function filterCategory(category, choices) {
   var clusterLayer = this.clusterLayer;
   this._markers.forEach(function(marker) {
     var showing = clusterLayer.hasLayer(marker);
-    var shouldBeShowing = categories.indexOf(marker.category) >= 0;
+    var shouldBeShowing = choices.indexOf(marker.properties[category]) >= 0;
 
     if(showing && !shouldBeShowing) {
       clusterLayer.removeLayer(marker);

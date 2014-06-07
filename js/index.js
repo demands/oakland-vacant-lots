@@ -20,14 +20,28 @@ module.exports = function(el, map) {
     map = new filterableClusterMap($(el).find('#map')[0], {popup: popupHtml, mapboxId: MAPBOX_MAP_ID});
   }
 
+  var $controls = $("<div>");
+
   $.getJSON(SERVER_BASE_URL + '/points', function(data) {
+    var categories = [];
+
     map.addBulk(data.features);
+    data.features.forEach(function(feature) {
+      var use = feature.properties.gen_use;
+
+      if(categories.indexOf(use) < 0) {
+        categories.push(use);
+        $controls.append($('<label><input type="checkbox" value="'+ use + '">' + use + '</label>'));
+      }
+    });
+
+    $(el).append($controls);
   });
 
-  $(el).find('#controls input').change(function () {
-    var childCategories = $(el).find("#controls :checked").map(function (idx, box){
+  $controls.change('input', function () {
+    var childCategories = $controls.find(":checked").map(function (idx, box){
       return $(box).val();
     }).toArray();
-    map.filterCategory(childCategories);
+    map.filterCategory('gen_use', childCategories);
   });
 };
