@@ -4,6 +4,7 @@ require('leaflet.markercluster');
 // options:
 //   mapboxId: <String> mapbox map id
 //   popup: <Function> single argument with parcel, should return html for a parcel popup
+//   filterCategory: <Array> list of categories that we'll want to filter against
 function filterableClusterMap(domRef, options) {
   this.options = options;
 
@@ -14,13 +15,20 @@ function filterableClusterMap(domRef, options) {
 
   this.clusterLayer = new L.MarkerClusterGroup();
   this.map.addLayer(this.clusterLayer);
+
+  this.layerCategories = {};
+  this.options.filterCategories.forEach(function(category) {
+    this.layerCategories[category] = {};
+  }.bind(this));
 };
 
 module.exports = filterableClusterMap;
 
 filterableClusterMap.prototype.addBulk = function addBulk(parcels) {
-  popupHtml = this.options.popup;
-  this._markers = parcels.map(function(parcel) {
+  var popupHtml = this.options.popup;
+  var layerCategories = this.layerCategories;
+
+  this.clusterLayer.addLayers(parcels.map(function(parcel) {
 
     var latLng = new L.LatLng(
       parcel.geometry.coordinates[1],
@@ -34,23 +42,27 @@ filterableClusterMap.prototype.addBulk = function addBulk(parcels) {
 
     marker.bindPopup(popupHtml(parcel.properties));
     marker.properties = parcel.properties;
+
+    Object.keys(layerCategories).forEach(function(category) {
+      var value = parcel.properties[category];
+      if(!value) return;
+      if(!layerCategories[category][value]) layerCategories[category][value] = [];
+      layerCategories[category][value].push(marker);
+    }.bind(this));
+
     return marker;
-  });
-  this.clusterLayer.addLayers(this._markers);
+  }));
 };
 
-filterableClusterMap.prototype.filterCategory = function filterCategory(category, choices) {
-  var clusterLayer = this.clusterLayer;
-  this._markers.forEach(function(marker) {
-    var showing = clusterLayer.hasLayer(marker);
-    var shouldBeShowing = choices.indexOf(marker.properties[category]) >= 0;
+filterableClusterMap.prototype.filterCategory = function filterCategory(category, values) {
+  var layerCategories = this.layerCategories;
+  if(!layerCategories[category]) return;
 
-    if(showing && !shouldBeShowing) {
-      clusterLayer.removeLayer(marker);
-    }
-    if(!showing && shouldBeShowing) {
-      clusterLayer.addLayer(marker);
-    }
-  });
+  var markers = [].concat.apply([], values.map(function(value) {
+    return layerCategories[category][value];
+  }));
+
+  this.clusterLayer.clearLayers();
+  this.clusterLayer.addLayers(markers);
 };
 

@@ -17,7 +17,7 @@ module.exports = function(el, map) {
     el = document.body;
   }
   if (!map) {
-    map = new filterableClusterMap($(el).find('#map')[0], {popup: popupHtml, mapboxId: MAPBOX_MAP_ID});
+    map = new filterableClusterMap($(el).find('#map')[0], {popup: popupHtml, mapboxId: MAPBOX_MAP_ID, filterCategories: ['gen_use']});
   }
 
   var $controls = $("<div>");
