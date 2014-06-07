@@ -8,8 +8,9 @@
     "dev": "npm run watch & static",
     "build": "mkdir -p build && browserify app.js | uglifyjs - > build/app.js",
     "build-dev": "browserify app.js --debug | exorcist build/app.js.map > build/app.js",
-    "watch": "watchy -w . -i 'build|.git' -- npm run build-dev",
-    "prepublish": "npm run build"
+    "watch": "watchy -w . -i 'build|.git|test' -- npm run build-dev",
+    "prepublish": "npm run build",
+    "test": "browserify test/filters.js > test/_build.js && testling -x open | faucet"
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,15 @@
   },
   "devDependencies": {
     "exorcist": "^0.1.6",
-    "watchy": "^0.4.3"
+    "watchy": "^0.4.3",
+    "tape": "^2.13.1",
+    "testling": "^1.6.1",
+    "faucet": "0.0.1"
+  },
+  "testling": {
+    "browsers": [
+      "chrome/latest"
+    ],
+    "html": "test/test.html"
   }
 }
