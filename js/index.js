@@ -3,7 +3,7 @@ var $ = require('jquery');
 var Mustache = require('mustache');
 
 function popupHtml(properties) {
-  var popupTemplate = '<h1><a href="./point.html?point={{target_fid}}">{{address}}</a></h1>' +
+  var popupTemplate = '<h1><a href="./point.html?point={{id}}">{{address}}</a></h1>' +
     'Category: {{spec_use}}<br/>' +
     'Acres: {{acreage}}<br/>' +
     'Square Ft: {{square_footage}}<br/>' +
