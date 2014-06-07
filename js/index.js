@@ -12,20 +12,21 @@ function popupHtml(properties) {
     return Mustache.render(popupTemplate, properties);
 }
 
-module.exports = function(map) {
+module.exports = function(el, map) {
+  if (!el) {
+    el = document.body;
+  }
   if (!map) {
-    map = new filterableClusterMap($('#map')[0], {popup: popupHtml, mapboxId: MAPBOX_MAP_ID});
+    map = new filterableClusterMap($(el).find('#map')[0], {popup: popupHtml, mapboxId: MAPBOX_MAP_ID});
   }
 
   $.getJSON(SERVER_BASE_URL + '/points', function(data) {
-    console.log("adding markers", data);
     map.addBulk(data.features);
   });
 
-  $('#controls').click("input", function (e) {
-    console.log("handling click");
-    var childCategories = $(e.currentTarget).children(":checked").map(function (idx, c){
-      return $(c).val();
+  $(el).find('#controls input').change(function () {
+    var childCategories = $(el).find("#controls :checked").map(function (idx, box){
+      return $(box).val();
     }).toArray();
     map.filterCategory(childCategories);
   });
