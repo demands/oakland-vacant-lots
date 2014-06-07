@@ -10,7 +10,7 @@
     "build-dev": "browserify app.js --debug | exorcist build/app.js.map > build/app.js",
     "watch": "watchy -w . -i 'build|.git|test' -- npm run build-dev",
     "prepublish": "npm run build",
-    "test": "browserify test/index.js > test/_build.js && testling -x open"
+    "test": "browserify test/index.js > test/_build.js && testling -x open | faucet"
   },
   "repository": {
     "type": "git",
