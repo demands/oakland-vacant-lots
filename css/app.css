@@ -79,18 +79,6 @@ nav#point-nav a:link, nav#point-nav a:visited {
   background:-moz-linear-gradient( center top, #9dce2c 5%, #8cb82b 100% );
   filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#9dce2c', endColorstr='#8cb82b');
   background-color:#9dce2c;
-  -webkit-border-top-left-radius:0px;
-  -moz-border-radius-topleft:0px;
-  border-top-left-radius:0px;
-  -webkit-border-top-right-radius:0px;
-  -moz-border-radius-topright:0px;
-  border-top-right-radius:0px;
-  -webkit-border-bottom-right-radius:0px;
-  -moz-border-radius-bottomright:0px;
-  border-bottom-right-radius:0px;
-  -webkit-border-bottom-left-radius:0px;
-  -moz-border-radius-bottomleft:0px;
-  border-bottom-left-radius:0px;
   text-indent:0;
   border:1px solid #83c41a;
   display:inline-block;
@@ -119,5 +107,36 @@ aside.right {
   display: inline;
 }
 
+.dialog {
+  display: none;
+  width: 500px;
+  height: 350px;
+  background-color: #DDD;
+  border: 2px solid black;
+  border-radius: 5px;
+  position: absolute;
+  top: 100px;
+  z-index: 2000;
+  padding: 7px;
+}
 
+.dialog h2 {
+  margin: 0 0 15px 0;
+}
+
+.dialog .close {
+  float: right;
+  display: inline-block;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+#report-modal {
+  width: 250px;
+  height: 150px;
+}
+
+#organize-modal {
+}
 

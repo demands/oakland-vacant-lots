@@ -43,4 +43,58 @@ module.exports = function(parsedUrl) {
       $('#point-info').html(output);
     });
   }
+
+  $('#organize-btn').click(function(e) {
+    e.preventDefault();
+    closeAllModals();
+    showModal($('#organize-modal'));
+  });
+
+  $('#report-btn').click(function(e) {
+    e.preventDefault();
+    closeAllModals();
+    showModal($('#report-modal'));
+  });
+
+  function showModal(modal) {
+    modal.css("top", Math.max(0, (($(window).height() - modal.outerHeight()) / 2) +
+                                                $(window).scrollTop()) + "px");
+    modal.css("left", Math.max(0, (($(window).width() - modal.outerWidth()) / 2) +
+                                                $(window).scrollLeft()) + "px");
+    modal.show();
+  }
+
+  $('.close').click(closeAllModals);
+  function closeAllModals() {
+    $('.dialog').hide();
+  }
+
+  $('#submit-organize').click(function(e){
+
+    var data = {
+      name: $('#organize-form #name').val(),
+      type: $('#organize-form #type').val(),
+      url: $('#organize-form #url').val(),
+      email: $('#organize-form #email').val(),
+      phone: $('#organize-form #phone').val(),
+      notes: $('#organize-form #notes').val()
+    };
+
+    $.ajax({
+      type: "POST",
+      url: SERVER_BASE_URL + '/organizer/' + pointId,
+      data: data,
+      success: function(req, status, err){
+                  $('#submit-organize').hide();
+                  $('#organize-form #sent').show();
+                },
+      error: function(req, status, err){
+                $('#submit-organize').hide();
+                $('#organize-form #error').text();
+                console.log(req.responseText)
+                $('#organize-form #error').show();
+              },
+      crossDomain: true
+    });
+  });
 }
