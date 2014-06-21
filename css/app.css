@@ -132,6 +132,10 @@ aside.right {
   font-size: 15px;
 }
 
+.error {
+  color: #FF0000;
+}
+
 #report-modal {
   width: 250px;
   height: 150px;

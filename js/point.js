@@ -83,15 +83,15 @@ module.exports = function(parsedUrl) {
     $.ajax({
       type: "POST",
       url: SERVER_BASE_URL + '/organizer/' + pointId,
-      data: data,
+      data: JSON.stringify(data),
+      processData: false,
       success: function(req, status, err){
                   $('#submit-organize').hide();
                   $('#organize-form #sent').show();
                 },
       error: function(req, status, err){
-                $('#submit-organize').hide();
-                $('#organize-form #error').text();
-                console.log(req.responseText)
+                var error = JSON.parse(req.responseText);
+                $('#organize-form #error').text(error.message);
                 $('#organize-form #error').show();
               },
       crossDomain: true
