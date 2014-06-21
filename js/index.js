@@ -3,6 +3,10 @@ var $ = require('jquery');
 var elessar = require('elessar');
 var Mustache = require('mustache');
 
+function twoSigFigs(val) {
+  return Math.round(val * 100) / 100;
+}
+
 function popupHtml(properties) {
   var popupTemplate = '<h1><a href="./point.html?point={{id}}">{{address}}</a></h1>' +
     'Category: {{spec_use}}<br/>' +
@@ -29,10 +33,10 @@ module.exports = function(el, map) {
   var $size = $("<div>").addClass('acreage').appendTo($controls);
   var $use = $("<div>").addClass('gen_use').html("<b>Category:</b> ").appendTo($controls);
   var slider;
+  var minRange = Infinity, maxRange = -Infinity;
 
   $.getJSON(SERVER_BASE_URL + '/points', function(data) {
     var categories = [];
-    var minRange = Infinity, maxRange = -Infinity;
 
     map.addBulk(data.features);
     data.features.forEach(function(feature) {
@@ -51,16 +55,19 @@ module.exports = function(el, map) {
     });
 
     slider = new elessar({
-      min: minRange,
-      max: maxRange,
-      valueFormat: parseInt,
-      valueParse: parseInt,
-      values: [[1,15]],
+      min: 0,
+      max: 3,
+      valueFormat: twoSigFigs,
+      valueParse: twoSigFigs,
+      values: [[0,3]],
       label: function(a){
+        if(a[1] === 3) {
+          a[1] = "3+";
+        }
         return "" + a[0] + " - " + a[1] + " acres";
       },
-      snap: 1,
-      minSize: 1,
+      snap: 0.01,
+      minSize: 0.10,
       barClass: 'progress',
       rangeClass: 'bar',
       maxRanges: 1
@@ -76,6 +83,7 @@ module.exports = function(el, map) {
       return $(box).val();
     }).toArray();
     var sliderVal = slider.val()[0];
+    if(sliderVal[1] === 3) sliderVal[1] = maxRange;
     map.setFilters([
       {attr: 'gen_use', values: childCategories},
       {attr: 'acreage', range: {min: sliderVal[0], max: sliderVal[1]}}
