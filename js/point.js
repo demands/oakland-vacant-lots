@@ -86,15 +86,17 @@ module.exports = function(parsedUrl) {
       data: JSON.stringify(data),
       processData: false,
       success: function(req, status, err){
-                  $('#submit-organize').hide();
-                  $('#organize-form #sent').show();
+                  $('#organize-form').hide();
+                  $('#organize-form-sent').show();
                 },
       error: function(req, status, err){
                 var error = JSON.parse(req.responseText);
                 $('#organize-form #error').text(error.message);
                 $('#organize-form #error').show();
               },
-      crossDomain: true
+      crossDomain: true // dev only?
     });
   });
+
+
 }
