@@ -16,19 +16,17 @@ function filterableClusterMap(domRef, options) {
   this.clusterLayer = new L.MarkerClusterGroup();
   this.map.addLayer(this.clusterLayer);
 
-  this.layerCategories = {};
-  this.options.filterCategories.forEach(function(category) {
-    this.layerCategories[category] = {};
-  }.bind(this));
+  this.markers = [];
+  this.filters = [];
 };
 
 module.exports = filterableClusterMap;
 
 filterableClusterMap.prototype.addBulk = function addBulk(parcels) {
   var popupHtml = this.options.popup;
-  var layerCategories = this.layerCategories;
+  var markers = this.markers;
 
-  this.clusterLayer.addLayers(parcels.map(function(parcel) {
+  [].concat.apply(this.markers, parcels.map(function(parcel) {
 
     var latLng = new L.LatLng(
       parcel.geometry.coordinates[1],
@@ -43,26 +41,34 @@ filterableClusterMap.prototype.addBulk = function addBulk(parcels) {
     marker.bindPopup(popupHtml(parcel.properties));
     marker.properties = parcel.properties;
 
-    Object.keys(layerCategories).forEach(function(category) {
-      var value = parcel.properties[category];
-      if(!value) return;
-      if(!layerCategories[category][value]) layerCategories[category][value] = [];
-      layerCategories[category][value].push(marker);
-    }.bind(this));
+    markers.push(marker);
 
     return marker;
   }));
+
+  this.render();
 };
 
-filterableClusterMap.prototype.filterCategory = function filterCategory(category, values) {
-  var layerCategories = this.layerCategories;
-  if(!layerCategories[category]) return;
+filterableClusterMap.prototype.setFilters = function setFilters(filters) {
+  this.filters = filters;
+  this.render();
+};
 
-  var markers = [].concat.apply([], values.map(function(value) {
-    return layerCategories[category][value];
-  }));
+filterableClusterMap.prototype.render = function render() {
+  var showingMarkers = [];
+  var filters = this.filters;
+
+  // do the filtering work
+  this.markers.forEach(function(marker) {
+    var match = filters.every(function(filter) {
+      var attr = marker.properties[filter.attr];
+      if (filter.values) return (filter.values.indexOf(attr) >= 0);
+      if (filter.range) return (filter.range.min < attr && filter.range.max > attr);
+      return true;
+    });
+    if(match) showingMarkers.push(marker);
+  });
 
   this.clusterLayer.clearLayers();
-  this.clusterLayer.addLayers(markers);
+  this.clusterLayer.addLayers(showingMarkers);
 };
-
