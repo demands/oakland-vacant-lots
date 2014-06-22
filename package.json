@@ -34,7 +34,8 @@
     "uglify-js": "^2.4.13",
     "mustache": "^0.8.1",
     "google-maps": "^2.0.0",
-    "elessar": "^1.4.15"
+    "elessar": "^1.4.15",
+    "cssify": "^0.5.1"
   },
   "devDependencies": {
     "exorcist": "^0.1.6",
