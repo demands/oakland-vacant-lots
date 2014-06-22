@@ -35,10 +35,16 @@ module.exports = function(el, map) {
   var slider;
   var minRange = Infinity, maxRange = -Infinity;
 
+  console.timeStamp('downloading points');
+  console.time('downloading points')
   $.getJSON(SERVER_BASE_URL + '/points', function(data) {
+    console.timeEnd('downloading points');
     var categories = [];
 
+    console.time('addBulk');
     map.addBulk(data.features);
+    console.timeEnd('addBulk');
+
     data.features.forEach(function(feature) {
       var use = feature.properties.gen_use;
       if(feature.properties.acreage < minRange) {

@@ -7,6 +7,7 @@ require('leaflet.markercluster');
 //   filterCategory: <Array> list of categories that we'll want to filter against
 function filterableClusterMap(domRef, options) {
   this.options = options;
+  var popupHtml = this.options.popup;
 
   this.map = L.mapbox.map(domRef, this.options.mapboxId);
 
@@ -16,6 +17,12 @@ function filterableClusterMap(domRef, options) {
   this.clusterLayer = new L.MarkerClusterGroup();
   this.map.addLayer(this.clusterLayer);
 
+  this.clusterLayer.on('click', function(e) {
+    var marker = e.layer;
+    if (!marker.properties) return;
+    if (!marker.getPopup()) marker.bindPopup(popupHtml(marker.properties)).openPopup();
+  });
+
   this.markers = [];
   this.filters = [];
 };
@@ -23,9 +30,9 @@ function filterableClusterMap(domRef, options) {
 module.exports = filterableClusterMap;
 
 filterableClusterMap.prototype.addBulk = function addBulk(parcels) {
-  var popupHtml = this.options.popup;
   var markers = this.markers;
 
+  console.time('making markers');
   [].concat.apply(this.markers, parcels.map(function(parcel) {
 
     var latLng = new L.LatLng(
@@ -38,13 +45,13 @@ filterableClusterMap.prototype.addBulk = function addBulk(parcels) {
       title: parcel.properties.Address
     });
 
-    marker.bindPopup(popupHtml(parcel.properties));
     marker.properties = parcel.properties;
 
     markers.push(marker);
 
     return marker;
   }));
+  console.timeEnd('making markers');
 
   this.render();
 };
@@ -58,6 +65,7 @@ filterableClusterMap.prototype.render = function render() {
   var showingMarkers = [];
   var filters = this.filters;
 
+  console.time('filtering');
   // do the filtering work
   this.markers.forEach(function(marker) {
     var match = filters.every(function(filter) {
@@ -68,7 +76,12 @@ filterableClusterMap.prototype.render = function render() {
     });
     if(match) showingMarkers.push(marker);
   });
+  console.timeEnd('filtering');
 
+  console.time('clearing')
   this.clusterLayer.clearLayers();
+  console.timeEnd('clearing')
+  console.time('adding')
   this.clusterLayer.addLayers(showingMarkers);
+  console.timeEnd('adding')
 };
