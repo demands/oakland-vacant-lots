@@ -98,5 +98,21 @@ module.exports = function(parsedUrl) {
     });
   });
 
+  $('#submit-report').click(function(e){
 
+    $.ajax({
+      type: "POST",
+      url: SERVER_BASE_URL + '/report/' + pointId,
+      success: function(req, status, err){
+                  $('#submit-report').hide();
+                  $('#report-sent').show();
+                },
+      error: function(req, status, err){
+                var error = JSON.parse(req.responseText);
+                $('#report-error').text(error.message);
+                $('#report-error').show();
+              },
+      crossDomain: true // dev only?
+    });
+  });
 }
