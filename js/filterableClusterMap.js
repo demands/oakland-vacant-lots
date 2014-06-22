@@ -1,5 +1,5 @@
 require('mapbox.js');
-require('leaflet.markercluster');
+require('leaflet.markercluster/dist/leaflet.markercluster-src.js');
 
 // options:
 //   mapboxId: <String> mapbox map id
@@ -14,7 +14,12 @@ function filterableClusterMap(domRef, options) {
   // TODO how to set default view?
   this.map.setView([37.8102589045, -122.265385309], 12);
 
-  this.clusterLayer = new L.MarkerClusterGroup();
+  this.clusterLayer = new L.MarkerClusterGroup({
+    chunkedLoading: true,
+    chunkProgress: function(processed, total, elapsed) {
+      console.log(processed, total, elapsed);
+    }
+  });
   this.map.addLayer(this.clusterLayer);
 
   this.clusterLayer.on('click', function(e) {
@@ -82,6 +87,8 @@ filterableClusterMap.prototype.render = function render() {
   this.clusterLayer.clearLayers();
   console.timeEnd('clearing')
   console.time('adding')
+  console.profile('addLayers')
   this.clusterLayer.addLayers(showingMarkers);
+  console.profileEnd('addLayers');
   console.timeEnd('adding')
 };
