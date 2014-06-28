@@ -5,11 +5,10 @@
   "description": "An example map-communities frontend",
   "main": "app.js",
   "scripts": {
-    "start": "static",
-    "dev": "npm run watch & static",
-    "build": "mkdir -p build && browserify app.js | uglifyjs - > build/app.js",
-    "build-dev": "browserify app.js --debug | exorcist build/app.js.map > build/app.js",
-    "watch": "watchy -w . -i 'build|.git|test' -- npm run build-dev",
+    "dev": "npm run watch & node bin/serve.js",
+    "build": "mkdir -p public/build && browserify app.js | uglifyjs - > public/build/app.js",
+    "build-dev": "browserify app.js --debug | exorcist public/build/app.js.map > public/build/app.js",
+    "watch": "watchy -w . -i 'public/build|.git|test' -- npm run build-dev",
     "prepublish": "npm run build",
     "test": "browserify test/index.js > test/_build.js && testling -x open | faucet"
   },
@@ -27,7 +26,6 @@
   },
   "homepage": "https://github.com/map-communities/frontend",
   "dependencies": {
-    "node-static": "^0.7.3",
     "browserify": "^3.44.2",
     "jquery": "^2.1.0",
     "mapbox.js": "^1.6.2",
@@ -38,7 +36,8 @@
     "elessar": "1.4.15",
     "cssify": "^0.5.1",
     "map-communities-core": "^0.1.0",
-    "map-communities-data-mongodb": "^0.2.0"
+    "map-communities-data-mongodb": "^0.2.0",
+    "st": "^0.5.1"
   },
   "devDependencies": {
     "exorcist": "^0.1.6",
