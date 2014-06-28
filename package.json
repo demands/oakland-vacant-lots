@@ -1,5 +1,6 @@
 {
   "name": "map-communities-example-frontend",
+  "private": true,
   "version": "0.0.0",
   "description": "An example map-communities frontend",
   "main": "app.js",
