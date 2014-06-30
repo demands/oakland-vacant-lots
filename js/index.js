@@ -30,8 +30,8 @@ module.exports = function(el, map) {
   var $controls = $("<div>").addClass('controls');
   $controls.change('input', filtersChanged);
 
-  var $size = $("<div>").addClass('acreage').appendTo($controls);
-  var $use = $("<div>").addClass('gen_use').html("<b>Category:</b> ").appendTo($controls);
+  var $size = $("<div>").addClass('acreage').html("<p><b>Filter by Acreage:</b></p> ").appendTo($controls);
+  var $use = $("<div>").addClass('gen_use').html("<p><b>Filter by Category:</b></p> ").appendTo($controls);
   var slider;
   var minRange = Infinity, maxRange = -Infinity;
 

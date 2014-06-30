@@ -38,9 +38,12 @@ module.exports = function(parsedUrl) {
       });
 
       var template = $('#point-template').html();
-
       var output = Mustache.render(template, data.properties);
       $('#point-info').html(output);
+
+      var template = $('#point-template2').html();
+      var output = Mustache.render(template, data.properties);
+      $('#point-info2').html(output);
     });
   }
 

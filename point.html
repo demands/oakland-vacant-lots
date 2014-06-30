@@ -3,27 +3,32 @@
 <head>
   <title>Map Community</title>
   <link href='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet'>
+  <link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
   <link href='css/app.css' rel='stylesheet'>
 </head>
 <body>
   <div id="wrapper">
     <header>
-      <h1>Map Community</h1>
+      <h1>Map Communities</h1>
+      <i>Form communities around points on a map.</i>
     </header>
     <div id="street-view"></div>
-    <div id="point">
-      <nav id="point-nav">
-        <a id="organize-btn" href="./organize.html">Organize Around This Point</a>
-        <a id="report-btn" href="./report-point.html">Report Point as Error</a>
-      </nav>
+    <div class="column">
       <div id="point-info"></div>
     </div>
-    <aside class="right">
+    <div class="column">
+      <div id="point-info2"></div>
+    </div>
+    <div class="column">
       <div id="map-view"></div>
-    </aside>
-    <div class="clear-it"></div>
+      <nav id="point-nav">
+        <a id="organize-btn" href="./organize.html">Organize This Point</a><br/>
+        <a id="report-btn" href="./report-point.html">Report Point as Error</a>
+      </nav>
+    </div>
+    <div class="single-border clear-it"></div>
     <footer >
-      map-communities!
+      <a href="http://mapcommunities.org" target="_new">mapcommunities.org</a>
     </footer>
   </div>
 
@@ -78,7 +83,6 @@
   <script type="text/mustache" id="point-template">
     <h1>{{name}}</h1>
     
-    <h2>Point Information</h2>
     <address>
       {{address}}<br>
       {{city}}, {{state}} {{zip}}
@@ -87,13 +91,14 @@
     <p><b>Square Footage:</b> {{square_footage}}</p>
     <p><b>Acreage:</b> {{acreage}}</p>
     <p><b>Use:</b> {{use_code}} ({{use_desc}})</p>
-    
+
     <h3>Owner</h3>
     <p>{{owner}}</p>
     <address>
       {{owner_address}}, {{owner_zip}}<br>
     </address>
-    
+  </script>
+  <script type="text/mustache" id="point-template2">
     <h3>Zoning</h3>
     <p>{{zone_label}}</p>
     
