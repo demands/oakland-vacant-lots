@@ -1,12 +1,20 @@
 # map-communities example frontend
 
+![A screenshot of map-communities example frontend in action](https://raw.github.com/map-communities/example-frontend/master/doc/screenshot.png)
+
 Take a look at [our roadmap](https://github.com/map-communities/meta) for more information.
 
 ## Running
 
+Dependencies:
+
+- **node.js** - http://nodejs.org/
+- **mongodb** - http://www.mongodb.org/
+
 ```
-npm start # production
-npm run dev # development, continuously compiling & uglifying for you
+git clone https://github.com/map-communities/example-frontend
+./bin/setup.sh
+npm start
 ```
 
 ## Tests
