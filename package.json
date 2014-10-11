@@ -35,7 +35,7 @@
     "jquery": "^2.1.0",
     "leaflet.markercluster": "^0.4.0",
     "map-communities-core": "^0.1.0",
-    "map-communities-data-mongodb": "^0.4.0",
+    "map-communities-data-mongodb": "^0.5.0",
     "mapbox.js": "^1.6.2",
     "mustache": "^0.8.1",
     "st": "^0.5.1",
