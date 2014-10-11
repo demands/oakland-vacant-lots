@@ -11,5 +11,5 @@ if ! $(which -s mongo); then
 fi
 
 npm install
-curl https://raw.githubusercontent.com/map-communities/oakland-vacant-lots/master/oakland-vacant-lots.geojson | ./node_modules/.bin/map-communities-import-mongodb oakland-map
+curl https://raw.githubusercontent.com/map-communities/oakland-vacant-lots/master/oakland-vacant-lots.geojson | ./node_modules/.bin/map-communities-import-mongodb "${MONGO:-oakland-map}"
 npm run build
