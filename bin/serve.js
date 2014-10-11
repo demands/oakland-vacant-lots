@@ -14,7 +14,7 @@ var conf = convict({
   }
 });
 
-var dataset = new ds.DataSet(conf.get('mongo'), 'oakland-map')
+var dataset = new ds.DataSet(conf.get('mongo'));
 dataset.connect(function () {
   core(dataset, addRoutes);
 });
