@@ -3,8 +3,18 @@ var core = require('map-communities-core');
 var ds = require('map-communities-data-mongodb');
 var st = require('st');
 var path = require('path');
+var convict = require('convict');
 
-var dataset = new ds.DataSet('localhost', 'oakland-map')
+var conf = convict({
+  mongo: {
+    format: 'url',
+    env: 'MONGO',
+    doc: 'Mongodb connection string',
+    default: 'localhost'
+  }
+});
+
+var dataset = new ds.DataSet(conf.get('mongo'), 'oakland-map')
 dataset.connect(function () {
   core(dataset, addRoutes);
 });

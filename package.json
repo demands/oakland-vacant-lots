@@ -28,17 +28,18 @@
   "homepage": "https://github.com/map-communities/frontend",
   "dependencies": {
     "browserify": "^3.44.2",
-    "jquery": "^2.1.0",
-    "mapbox.js": "^1.6.2",
-    "leaflet.markercluster": "^0.4.0",
-    "uglify-js": "^2.4.13",
-    "mustache": "^0.8.1",
-    "google-maps": "^2.0.0",
-    "elessar": "1.4.15",
+    "convict": "^0.4.2",
     "cssify": "^0.5.1",
+    "elessar": "1.4.15",
+    "google-maps": "^2.0.0",
+    "jquery": "^2.1.0",
+    "leaflet.markercluster": "^0.4.0",
     "map-communities-core": "^0.1.0",
     "map-communities-data-mongodb": "^0.2.0",
-    "st": "^0.5.1"
+    "mapbox.js": "^1.6.2",
+    "mustache": "^0.8.1",
+    "st": "^0.5.1",
+    "uglify-js": "^2.4.13"
   },
   "devDependencies": {
     "exorcist": "^0.1.6",
