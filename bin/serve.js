@@ -10,7 +10,7 @@ var conf = convict({
     format: 'url',
     env: 'MONGO',
     doc: 'Mongodb connection string',
-    default: 'localhost'
+    default: 'localhost/oakland-map'
   }
 });
 
